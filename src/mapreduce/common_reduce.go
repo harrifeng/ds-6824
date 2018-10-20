@@ -49,7 +49,7 @@ func doReduce(
 	//
 	// Your code here (Part I).
 	//
-	vals := []map[string]int{}
+	vals := []map[string]string{}
 
 	for i := 0; i < nMap; i++ {
 		fp, err := os.Open(reduceName(jobName, i, reduceTask))
@@ -60,7 +60,7 @@ func doReduce(
 
 		decoder := json.NewDecoder(fp)
 		for {
-			val := map[string]int{}
+			val := map[string]string{}
 			err := decoder.Decode(&val)
 			if err != nil {
 				break
