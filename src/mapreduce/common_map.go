@@ -80,7 +80,11 @@ func doMap(
 		if len(key) == 0 {
 			continue
 		}
-		tmp := map[string]string{key: "1"}
+
+		tmp := KeyValue{
+			Key:   key,
+			Value: "1",
+		}
 		err := encs[ihash(key)%nReduce].Encode(&tmp)
 		if err != nil {
 			panic(err)

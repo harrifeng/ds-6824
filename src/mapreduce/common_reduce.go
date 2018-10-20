@@ -2,6 +2,7 @@ package mapreduce
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -49,7 +50,7 @@ func doReduce(
 	//
 	// Your code here (Part I).
 	//
-	vals := []map[string]string{}
+	mkv := map[string]KeyValue{}
 
 	for i := 0; i < nMap; i++ {
 		fp, err := os.Open(reduceName(jobName, i, reduceTask))
@@ -60,13 +61,14 @@ func doReduce(
 
 		decoder := json.NewDecoder(fp)
 		for {
-			val := map[string]string{}
-			err := decoder.Decode(&val)
+			kv := KeyValue{}
+			err := decoder.Decode(&kv)
 			if err != nil {
 				break
 			}
-			vals = append(vals, val)
+
+			mkv[kv.Key] = kv
 		}
 	}
-
+	fmt.Println(mkv)
 }
