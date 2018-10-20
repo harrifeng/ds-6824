@@ -2,6 +2,7 @@ package mapreduce
 
 import (
 	"encoding/json"
+	"fmt"
 	"hash/fnv"
 	"io/ioutil"
 	"os"
@@ -74,10 +75,16 @@ func doMap(
 		panic(err)
 	}
 
-	dataSlice := strings.Split(string(data), " ")
+	dataSlice := strings.Split(string(data), "\n")
+
+	fmt.Println(len(dataSlice))
 
 	for _, key := range dataSlice {
+		if len(key) == 0 {
+			continue
+		}
 		tmp := map[string]int{key: 1}
+		// log.Println("tmp", tmp)
 		err := encs[ihash(key)%nReduce].Encode(&tmp)
 		if err != nil {
 			panic(err)
