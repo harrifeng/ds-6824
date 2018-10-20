@@ -5,7 +5,6 @@ import (
 	"hash/fnv"
 	"io/ioutil"
 	"os"
-	"strings"
 )
 
 func doMap(
@@ -67,25 +66,18 @@ func doMap(
 		}
 		defer file.Close()
 		encs = append(encs, json.NewEncoder(file))
+
 	}
 
 	data, err := ioutil.ReadFile(inFile)
 	if err != nil {
 		panic(err)
 	}
+	kvs := mapF("", string(data))
 
-	dataSlice := strings.Split(string(data), "\n")
+	for _, kv := range kvs {
 
-	for _, key := range dataSlice {
-		if len(key) == 0 {
-			continue
-		}
-
-		tmp := KeyValue{
-			Key:   key,
-			Value: "1",
-		}
-		err := encs[ihash(key)%nReduce].Encode(&tmp)
+		err := encs[ihash(kv.Key)%nReduce].Encode(&kv)
 		if err != nil {
 			panic(err)
 		}
