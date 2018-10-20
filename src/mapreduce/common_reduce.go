@@ -81,7 +81,6 @@ func doReduce(
 	enc := json.NewEncoder(file)
 
 	for key, _ := range mkv {
-		// enc.Encode(KeyValue{key, reduceF(key, mkv[key])})
-		enc.Encode(KeyValue{key, "1"})
+		enc.Encode(KeyValue{key, reduceF(key, mkv[key])})
 	}
 }
