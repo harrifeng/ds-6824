@@ -1,5 +1,10 @@
 package mapreduce
 
+import (
+	"encoding/json"
+	"os"
+)
+
 func doReduce(
 	jobName string, // the name of the whole MapReduce job
 	reduceTask int, // which reduce task this is
@@ -44,4 +49,24 @@ func doReduce(
 	//
 	// Your code here (Part I).
 	//
+	vals := []map[string]int{}
+
+	for i := 0; i < nMap; i++ {
+		fp, err := os.Open(reduceName(jobName, i, reduceTask))
+		if err != nil {
+			panic(err)
+		}
+		defer fp.Close()
+
+		decoder := json.NewDecoder(fp)
+		for {
+			val := map[string]int{}
+			err := decoder.Decode(&val)
+			if err != nil {
+				break
+			}
+			vals = append(vals, val)
+		}
+	}
+
 }
