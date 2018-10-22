@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 //
@@ -20,7 +21,11 @@ func mapF(filename string, contents string) []mapreduce.KeyValue {
 	ret := []mapreduce.KeyValue{}
 
 	// arr := strings.Split(contents, unicode.Space)
-	arr := strings.Fields(contents)
+
+	f := func(c rune) bool {
+		return !unicode.IsLetter(c) && !unicode.IsNumber(c)
+	}
+	arr := strings.FieldsFunc(contents, f)
 
 	for _, one := range arr {
 		ret = append(ret, mapreduce.KeyValue{
