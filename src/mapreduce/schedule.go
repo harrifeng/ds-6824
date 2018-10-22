@@ -50,9 +50,7 @@ func schedule(jobName string, mapFiles []string, nReduce int, phase jobPhase, re
 				NumOtherPhase: n_other,
 			}
 			wa := <-registerChan
-			fmt.Println("wa---------->", wa)
 			call(wa, "Worker.DoTask", dtk, nil)
-			fmt.Println("Done", i)
 		}()
 	}
 	wg.Wait()
