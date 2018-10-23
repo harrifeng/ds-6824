@@ -73,7 +73,7 @@ func doMap(
 	if err != nil {
 		panic(err)
 	}
-	kvs := mapF("", string(data))
+	kvs := mapF(inFile, string(data))
 
 	for _, kv := range kvs {
 
