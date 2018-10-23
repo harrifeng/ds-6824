@@ -50,10 +50,13 @@ func schedule(jobName string, mapFiles []string, nReduce int, phase jobPhase, re
 			defer wg.Done()
 			wa := <-registerChan
 			call(wa, "Worker.DoTask", &d, nil)
-			registerChan <- wa
+			fmt.Println("done0")
+			go func() { registerChan <- wa }()
 		}(dtk)
 	}
+	fmt.Println("done1")
 	wg.Wait()
+	fmt.Println("done2")
 
 	fmt.Printf("Schedule: %v done\n", phase)
 }
