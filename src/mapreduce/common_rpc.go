@@ -1,6 +1,7 @@
 package mapreduce
 
 import (
+	"fmt"
 	"net/rpc"
 )
 
@@ -49,6 +50,9 @@ type RegisterArgs struct {
 //
 func call(srv string, rpcname string,
 	args interface{}, reply interface{}) bool {
+
+	fmt.Println("args===|>", srv, rpcname, args, reply)
+
 	c, errx := rpc.Dial("unix", srv)
 	if errx != nil {
 		return false
